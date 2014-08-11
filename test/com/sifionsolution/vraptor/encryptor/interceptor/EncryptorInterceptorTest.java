@@ -33,16 +33,21 @@ public class EncryptorInterceptorTest {
 	}
 
 	@Test
-	public void shouldAcceptEncryptAnnotation() {
+	public void shouldAcceptWhenEncryptAnnotationIsFirstParameter() {
 		ControllerMethod first = getControllerMethod(MyController.class, "first");
 		assertTrue(interceptor.accepts(first));
+	}
 
+	@Test
+	public void shouldAcceptWhenEncryptAnnotationIsAMiddleParameter() {
 		ControllerMethod middle = getControllerMethod(MyController.class, "middle");
 		assertTrue(interceptor.accepts(middle));
+	}
 
+	@Test
+	public void shouldAcceptWhenEncryptAnnotationIsLastParameter() {
 		ControllerMethod last = getControllerMethod(MyController.class, "last");
 		assertTrue(interceptor.accepts(last));
-
 	}
 
 	@Test
