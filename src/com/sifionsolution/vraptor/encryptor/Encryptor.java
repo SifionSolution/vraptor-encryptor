@@ -6,5 +6,4 @@ public interface Encryptor {
 	public String encrypt(String plain);
 
 	public String encrypt(String plain, EncryptSalter salter);
-
 }
