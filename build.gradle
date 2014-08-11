@@ -105,7 +105,8 @@ dependencies {
 	compile library.inject
 	compile library.cdi
 	compile library.cdi_weld
-			    	
+	compile library.ssolution_commons
+	
 	testCompile library.jmockito
 	testCompile library.junit
 
