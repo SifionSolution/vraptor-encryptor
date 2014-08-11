@@ -1,0 +1,112 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'eclipse'
+
+apply from: "https://raw.githubusercontent.com/SifionSolution/rootGradle/master/root.gradle"
+
+group = "com.sifionsolution"
+archivesBaseName = "vraptor-encryptor"
+version = "1.0"
+
+signing {
+    sign configurations.archives
+}
+
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+		}
+	}
+	test { 
+		java {
+			srcDir 'test'
+		}
+	}
+	
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+              authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+               name 'ssolution-encryptor'
+               packaging 'jar'
+               description 'Utilities classes we use through various projects'
+               url 'https://github.com/SifionSolution/vraptor-encryptor'
+			   organization {
+			       name 'Sifion Solution'
+				   url 'http://www.sifionsolution.com'
+			   }
+               scm {
+                   url 'scm:git@github.com:SifionSolution/vraptor-encryptor.git'
+                   connection 'scm:git@github.com:SifionSolution/vraptor-encryptor.git'
+                   developerConnection 'scm:git@github.com:SifionSolution/vraptor-encryptor.git'
+               }
+
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'mtnoronha'
+                       name 'Marco Noronha'
+                       organization  'Sifion Solution'
+                       organizationUrl 'http://www.sifionsolution.com'
+                   }
+                   developer {
+                       id 'rafaelGuerreiro'
+                       name 'Rafael Guerreiro'
+                       organization  'Sifion Solution'
+                       organizationUrl 'http://www.sifionsolution.com'
+                   }
+               }
+           }
+        }
+    }
+}
+
+
+repositories {
+	mavenCentral()	
+}
+
+dependencies {
+	compile library.vraptor
+	compile library.inject
+	compile library.cdi
+	compile library.cdi_weld
+			    	
+	testCompile library.jmockito
+	testCompile library.junit
+
+}
