@@ -46,7 +46,7 @@ public class EncryptorInterceptor {
 
 	@AroundCall
 	public void around(SimpleInterceptorStack stack) {
-		logger.info("EncrytorInterceptor activated");
+		logger.debug("EncrytorInterceptor activated");
 		ValuedParameter[] valuedParameters = methodInfo.getValuedParameters();
 
 		for (int i = 0; i < valuedParameters.length; i++) {
@@ -58,20 +58,11 @@ public class EncryptorInterceptor {
 				continue;
 			}
 
-			logger.info("Intercepting parameter name: " + obj.getParameter().getName());
+			logger.debug("Intercepting parameter name: " + obj.getParameter().getName());
 
-			EncryptStrategy[] strategyArray = ((Encrypt) annotation).value();
+			Encryptor encryptor = extractEncryptor(((Encrypt) annotation).value());
 
-			Encryptor encryptor = extractEncryptor(strategyArray);
-
-			String value = String.valueOf(obj.getValue());
-			System.out.println("plain: ");
-			System.out.println(value);
-			System.out.println("cript: ");
-			String encrypted = encryptor.encrypt(value);
-			System.out.println(encrypted);
-
-			methodInfo.setParameter(i, encrypted);
+			methodInfo.setParameter(i, encryptor.encrypt(String.valueOf(obj.getValue())));
 		}
 
 		stack.next();
@@ -87,8 +78,6 @@ public class EncryptorInterceptor {
 
 	@Accepts
 	public boolean accepts(ControllerMethod method) {
-		System.out.println("===================> SHOULD I ?");
-		logger.info("Should I accept?");
 		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
 		for (Annotation[] ann : annotations) {
 			for (Annotation a : ann) {
