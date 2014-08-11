@@ -1,21 +1,17 @@
 package com.sifionsolution.vraptor.encryptor.interceptor;
 
+import static com.sifionsolution.vraptor.encryptor.ControllerMethodCreator.create;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.lang.reflect.Method;
-
-import net.vidageek.mirror.dsl.Mirror;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import br.com.caelum.vraptor.controller.ControllerMethod;
-import br.com.caelum.vraptor.controller.DefaultBeanClass;
-import br.com.caelum.vraptor.controller.DefaultControllerMethod;
 import br.com.caelum.vraptor.core.MethodInfo;
+import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 import com.sifionsolution.vraptor.encryptor.MyController;
 
@@ -26,42 +22,38 @@ public class EncryptorInterceptorTest {
 	@Mock
 	private MethodInfo methodInfo;
 
+	@Mock
+	private SimpleInterceptorStack stack;
+
 	@Before
 	public void init() {
 		initMocks(this);
+
 		interceptor = new EncryptorInterceptor(methodInfo);
 	}
 
 	@Test
 	public void shouldAcceptWhenEncryptAnnotationIsFirstParameter() {
-		ControllerMethod first = getControllerMethod(MyController.class, "first");
+		ControllerMethod first = create(MyController.class, "first");
 		assertTrue(interceptor.accepts(first));
 	}
 
 	@Test
 	public void shouldAcceptWhenEncryptAnnotationIsAMiddleParameter() {
-		ControllerMethod middle = getControllerMethod(MyController.class, "middle");
+		ControllerMethod middle = create(MyController.class, "middle");
 		assertTrue(interceptor.accepts(middle));
 	}
 
 	@Test
 	public void shouldAcceptWhenEncryptAnnotationIsLastParameter() {
-		ControllerMethod last = getControllerMethod(MyController.class, "last");
+		ControllerMethod last = create(MyController.class, "last");
 		assertTrue(interceptor.accepts(last));
 	}
 
 	@Test
 	public void shouldNotAcceptIfEncryptAnnotationNotPresent() {
-		ControllerMethod unused = getControllerMethod(MyController.class, "unused");
+		ControllerMethod unused = create(MyController.class, "unused");
 		assertFalse(interceptor.accepts(unused));
-	}
-
-	private ControllerMethod getControllerMethod(Class<?> clazz, String method) {
-		return new DefaultControllerMethod(new DefaultBeanClass(clazz), getMethod(clazz, method));
-	}
-
-	private Method getMethod(Class<?> clazz, String method) {
-		return new Mirror().on(clazz).reflect().method(method).withAnyArgs();
 	}
 
 }
