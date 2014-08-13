@@ -3,13 +3,13 @@ package com.sifionsolution.vraptor.encryptor.implementation;
 import com.google.common.hash.Hashing;
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
-import com.sifionsolution.vraptor.encryptor.salter.implementation.ShuffleSalter;
+import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 public class Sha512Encryptor implements Encryptor {
 
 	@Override
 	public String encrypt(String plain) {
-		return encrypt(plain, new ShuffleSalter());
+		return encrypt(plain, new DefaultSalter());
 	}
 
 	@Override
