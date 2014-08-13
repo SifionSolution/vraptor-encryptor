@@ -43,7 +43,7 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.M
 
 ## Choose your Salter
 
-You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java). Here´s an example:
+You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/SalterStrategy.java). Here´s an example:
 
 ```java
 	@Post("/register")
