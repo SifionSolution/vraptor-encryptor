@@ -10,7 +10,7 @@ Soon will be available on Maven.
 
 ## Basic usage
 
-The default configuration will encrypt your data twice with Sha512 encryption and use the [default shuffle salter](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/implementation/ShuffleSalter.java). All you you need its the ```@Encrypt``` annotation on your actions **parameter**:
+The default configuration will encrypt your data with Sha512 encryption and use the *default encryption salter*. The default salter gets null safe version of your String [(check the source for details)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/implementation/DefaultSalter.java#L11).  All you you need its the ```@Encrypt``` annotation on your actions **parameter**:
 
 ```java
 @Post("/register")
@@ -23,14 +23,11 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt String password) 
 }
 ``` 
 
-## Choosing another encryption type
+## Choose encryption
 
-*(Coming soon)* - You can change the encryption type by selecting the [encryption strategy](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java):
+You can change the encryption type by selecting the [encryption strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java):
 
 ```java
-
-//stub
-
 @Post("/register")
 public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.MD5) String password) {
 	validator.onErrorRedirectTo(RegisterController.class).index();
@@ -42,7 +39,17 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.M
 
 ```
 
-## Implementing your own Salter
+## Choose your Salter
+
+*(Coming soon)* - You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java). Here´s an example:
+
+```java
+  //TODO 
+```
+
+
+
+## Implement your Salter
 
 *(Coming soon)* - You can also implement your own salter. To do this, all you need to do is:
 
