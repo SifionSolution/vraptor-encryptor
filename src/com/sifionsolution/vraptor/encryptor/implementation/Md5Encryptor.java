@@ -1,5 +1,7 @@
 package com.sifionsolution.vraptor.encryptor.implementation;
 
+import java.nio.charset.Charset;
+
 import com.google.common.hash.Hashing;
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
@@ -21,6 +23,6 @@ public class Md5Encryptor implements Encryptor {
 	}
 
 	private String toMd5(String salt) {
-		return Hashing.md5().hashUnencodedChars(salt).toString();
+		return Hashing.md5().hashString(salt, Charset.forName("UTF-8")).toString();
 	}
 }
