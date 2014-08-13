@@ -1,10 +1,11 @@
 package com.sifionsolution.vraptor.encryptor;
 
 import com.sifionsolution.vraptor.encryptor.implementation.Md5Encryptor;
+import com.sifionsolution.vraptor.encryptor.implementation.Sha256Encryptor;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 
 public enum EncryptStrategy {
-	SHA512(new Sha512Encryptor()), MD5(new Md5Encryptor());
+	SHA512(new Sha512Encryptor()), SHA256(new Sha256Encryptor()), MD5(new Md5Encryptor());
 
 	private Encryptor encryptor;
 
