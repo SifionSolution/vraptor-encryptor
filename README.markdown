@@ -16,7 +16,8 @@ The default configuration will encrypt your data with Sha512 encryption and use 
 @Post("/register")
 public void register(@NotNull @Valid SignUpUser user, @Encrypt String password) {
 	validator.onErrorRedirectTo(RegisterController.class).index();
-  //Password is encrypted
+    
+    //Password is encrypted
 	dao.register(user, password);
 
 	result.redirectTo(RootController.class).index();
@@ -31,7 +32,8 @@ You can change the encryption type by selecting the [encryption strategy (check 
 @Post("/register")
 public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.MD5) String password) {
 	validator.onErrorRedirectTo(RegisterController.class).index();
-  //Password is encrypted
+    
+    //Password is encrypted
 	dao.register(user, password);
 
 	result.redirectTo(RootController.class).index();
@@ -41,10 +43,18 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.M
 
 ## Choose your Salter
 
-*(Coming soon)* - You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java). Here´s an example:
+You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java). Here´s an example:
 
 ```java
-  //TODO 
+	@Post("/register")
+	public void register(@NotNull @Valid SignUpUser user, @Encrypt(salter=SalterStrategy.SHUFFLE) String password) {
+		validator.onErrorRedirectTo(RegisterController.class).index();
+ 	    
+ 	    //Password is encrypted
+		dao.register(user, password);
+
+		result.redirectTo(RootController.class).index();
+	}
 ```
 
 
