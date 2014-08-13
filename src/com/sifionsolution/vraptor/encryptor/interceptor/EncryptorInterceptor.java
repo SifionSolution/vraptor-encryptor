@@ -22,6 +22,9 @@ import com.sifionsolution.vraptor.encryptor.EncryptStrategy;
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
+import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.SalterStrategy;
+import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @Intercepts
 @RequestScoped
@@ -61,17 +64,30 @@ public class EncryptorInterceptor {
 			logger.debug("Intercepting parameter name: " + obj.getParameter().getName());
 
 			Encryptor encryptor = extractEncryptor(((Encrypt) annotation).value());
+			EncryptSalter salter = extractSalter(((Encrypt) annotation).salter());
 
-			methodInfo.setParameter(i, encryptor.encrypt(String.valueOf(obj.getValue())));
+			methodInfo.setParameter(i, encryptor.encrypt(String.valueOf(obj.getValue()), salter));
 		}
 
 		stack.next();
+	}
+
+	private EncryptSalter extractSalter(SalterStrategy[] strategyArray) {
+		if (notEmpty(strategyArray)) {
+			return strategyArray[0].getSalter();
+		}
+
+		logger.info("No Salters configured. Return default");
+
+		return new DefaultSalter();
 	}
 
 	private Encryptor extractEncryptor(EncryptStrategy[] strategyArray) {
 		if (notEmpty(strategyArray)) {
 			return strategyArray[0].getEncryptor();
 		}
+
+		logger.info("No Encrypt Strategy configured. Return default");
 
 		return new Sha512Encryptor();
 	}
