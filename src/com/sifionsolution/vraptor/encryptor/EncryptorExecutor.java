@@ -13,6 +13,7 @@ import br.com.caelum.vraptor.http.Parameter;
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
+import com.sifionsolution.vraptor.encryptor.interceptor.EncryptorInterceptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 @RequestScoped
@@ -23,6 +24,14 @@ public class EncryptorExecutor {
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 
+	/**
+	 * Checking for mapped annotations
+	 * 
+	 * @param annotations
+	 * @return <code>true</code> if at least one annotation is mapped
+	 * 
+	 * @see EncryptorInterceptor
+	 */
 	public boolean containsAny(Annotation[] annotations) {
 		for (Annotation a : annotations)
 			if (contains(a))
@@ -31,6 +40,15 @@ public class EncryptorExecutor {
 		return false;
 	}
 
+	/**
+	 * Checking if annotation is mapped
+	 * 
+	 * @param annotation
+	 *            Annotation to check
+	 * @return <code>true</code> if its a mapped Annotation.
+	 * 
+	 * @see EncryptorInterceptor
+	 */
 	public boolean contains(Annotation annotation) {
 		return configuration.contains(annotation);
 	}
