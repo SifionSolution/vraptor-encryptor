@@ -1,9 +1,10 @@
 package com.sifionsolution.vraptor.encryptor;
 
+import static com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfiguration.getInstance;
+
 import java.lang.annotation.Annotation;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import br.com.caelum.vraptor.http.Parameter;
 
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
-import com.sifionsolution.vraptor.encryptor.configuration.CustomAnnotationConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -20,8 +21,7 @@ import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 @RequestScoped
 public class EncryptorExecutor {
 
-	@Inject
-	private CustomAnnotationConfiguration configuration;
+	private EncryptorConfiguration configuration = getInstance();
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 
@@ -71,7 +71,7 @@ public class EncryptorExecutor {
 			return createSalter(annotation.salter());
 		}
 
-		return createSalter(configuration.getEncryptDefaultSalter());
+		return createSalter(configuration.getDefaultSalter());
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EncryptorExecutor {
 			return createEncryptor(annotation.value());
 		}
 
-		return createEncryptor(configuration.getEncryptDefaultEncryptor());
+		return createEncryptor(configuration.getDefaultEncryptor());
 	}
 
 	/**
@@ -138,6 +138,7 @@ public class EncryptorExecutor {
 		} catch (Exception e) {
 			logger.error("Coult not instantiate Salter", e);
 			logger.info("Returning default Salter");
+			// TODO I think it should return null.
 			return new DefaultSalter();
 		}
 	}
@@ -154,8 +155,8 @@ public class EncryptorExecutor {
 		} catch (Exception e) {
 			logger.error("Coult not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
+			// TODO I think it should return null.
 			return new Sha512Encryptor();
 		}
 	}
-
 }
