@@ -3,7 +3,6 @@ package com.sifionsolution.vraptor.encryptor;
 import java.lang.annotation.Annotation;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import br.com.caelum.vraptor.http.Parameter;
 
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.CustomAnnotationConfiguration;
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -24,9 +22,6 @@ public class EncryptorExecutor {
 
 	@Inject
 	private CustomAnnotationConfiguration configuration;
-
-	@Inject
-	private Instance<EncryptorConfiguration> encryptorConfiguration;
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 
@@ -40,10 +35,6 @@ public class EncryptorExecutor {
 	 * @return Encoded String
 	 */
 	public String encrypt(Parameter parameter, String toEncrypt) {
-		if (!encryptorConfiguration.isUnsatisfied()) {
-			encryptorConfiguration.get().configure(configuration);
-		}
-
 		AnnotationMapping custom = findCustomAnnotationMapping(parameter.getDeclaredAnnotations());
 
 		if (custom != null) {
