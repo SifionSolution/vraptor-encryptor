@@ -51,8 +51,7 @@ public class EncryptorExecutor {
 	}
 
 	/**
-	 * Determines if should use the Encrypt Mapping Configuration or annotated
-	 * salter
+	 * Creates a default salter
 	 * 
 	 * @return Salter instance
 	 */
@@ -61,8 +60,7 @@ public class EncryptorExecutor {
 	}
 
 	/**
-	 * Determines if should use the Encrypt Mapping Configuration or annotated
-	 * encryptor
+	 * Creates a default encryptor
 	 * 
 	 * @return Encryptor instance
 	 */
@@ -77,6 +75,7 @@ public class EncryptorExecutor {
 	 *            Mapping to be used for encryption
 	 * @param toEncrypt
 	 *            String to be encrypted
+	 * 
 	 * @return Encoded String
 	 */
 	private String useCustomMappingToEncrypt(AnnotationMapping custom, String toEncrypt) {
@@ -93,7 +92,11 @@ public class EncryptorExecutor {
 	 * 
 	 * @param declaredAnnotations
 	 *            Developers declared annotations
-	 * @return <code>null</code> if no mapping was found
+	 * 
+	 * @throws IllegalStateException
+	 *             Mapping is mandatory.
+	 * 
+	 * @return Existing AnnotationMapping
 	 */
 	private AnnotationMapping getAnnotationMapping(Annotation[] declaredAnnotations) {
 		for (Annotation annotation : declaredAnnotations) {
