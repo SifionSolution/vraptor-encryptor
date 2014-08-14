@@ -71,7 +71,7 @@ public class EncryptorInterceptor {
 		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
 		for (Annotation[] ann : annotations) {
 			for (Annotation a : ann) {
-				if (a instanceof Encrypt)
+				if (executor.contains(a))
 					return true;
 			}
 		}

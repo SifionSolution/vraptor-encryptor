@@ -30,6 +30,10 @@ public class AnnotationMapping {
 		this.salter = salter;
 	}
 
+	public AnnotationMapping(Annotation annotation) {
+		this(annotation.getClass(), null, null);
+	}
+
 	public String toString() {
 		if (annotation == null)
 			return "";

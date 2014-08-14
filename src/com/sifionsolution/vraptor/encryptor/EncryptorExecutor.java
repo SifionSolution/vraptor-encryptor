@@ -23,6 +23,10 @@ public class EncryptorExecutor {
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 
+	public boolean contains(Annotation annotation) {
+		return configuration.contains(annotation);
+	}
+	
 	/**
 	 * Encrypts user parameter selecting the intended strategy
 	 * 

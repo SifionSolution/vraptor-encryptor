@@ -116,6 +116,10 @@ public class EncryptConfiguration {
 		return null;
 	}
 
+	public boolean contains(Annotation annotation) {
+		return mappings.contains(new AnnotationMapping(annotation));
+	}
+
 	/**
 	 * Default configured Salter
 	 * 
