@@ -105,6 +105,24 @@ public class CustomAnnotationConfiguration {
 	}
 
 	/**
+	 * Default Salter configured in Encrypt Annotation
+	 * 
+	 * @return
+	 */
+	public Class<? extends EncryptSalter> getEncryptDefaultSalter() {
+		return getEncryptMap().getSalter();
+	}
+
+	/**
+	 * Default Encryptor configured in Encrypt Annotation
+	 * 
+	 * @return
+	 */
+	public Class<? extends Encryptor> getEncryptDefaultEncryptor() {
+		return getEncryptMap().getEncryptor();
+	}
+
+	/**
 	 * Shortcut for <code>findingMaping(Encrypt.class)</code>
 	 * 
 	 * @return <code>null</code> if Encrypt Map was not found
@@ -112,5 +130,4 @@ public class CustomAnnotationConfiguration {
 	private AnnotationMapping getEncryptMap() {
 		return findMapping(Encrypt.class);
 	}
-
 }
