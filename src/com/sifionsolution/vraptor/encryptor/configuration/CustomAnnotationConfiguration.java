@@ -25,7 +25,7 @@ public class CustomAnnotationConfiguration {
 
 	@PostConstruct
 	public void init() {
-		mappings.add(new AnnotationMapping(Encrypt.class, Sha512Encryptor.class, DefaultSalter.class));
+		setDefaults(Sha512Encryptor.class, DefaultSalter.class);
 	}
 
 	/**
@@ -40,10 +40,8 @@ public class CustomAnnotationConfiguration {
 
 		logger.debug("Changing Encrypt defaults: Encryptor => " + encryptor.getCanonicalName() + " Salter => "
 				+ salter.getCanonicalName());
-		AnnotationMapping map = getEncryptMap();
-		map.setEncryptor(encryptor);
-		map.setSalter(salter);
 
+		map(Encrypt.class, encryptor, salter);
 		return this;
 	}
 
@@ -73,15 +71,25 @@ public class CustomAnnotationConfiguration {
 	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {
 
-		if (annotation == Encrypt.class) {
-			return setDefaults(encryptor, salter);
-		}
-
 		logger.debug("Mapping annotation " + annotation.getCanonicalName() + ": Encryptor => "
 				+ encryptor.getCanonicalName() + " Salter => " + salter.getCanonicalName());
-		mappings.add(new AnnotationMapping(annotation, encryptor, salter));
+
+		replaceIfExists(new AnnotationMapping(annotation, encryptor, salter));
 
 		return this;
+	}
+
+	private void replaceIfExists(AnnotationMapping annotationMapping) {
+		AnnotationMapping old = findMapping(annotationMapping);
+
+		if (old != null)
+			mappings.remove(old);
+
+		mappings.add(annotationMapping);
+	}
+
+	private AnnotationMapping findMapping(AnnotationMapping annotationMapping) {
+		return findMapping(annotationMapping.getAnnotation());
 	}
 
 	/**

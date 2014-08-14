@@ -6,9 +6,9 @@ import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 public class AnnotationMapping {
-	private Class<?> annotation;
-	private Class<? extends Encryptor> encryptor;
-	private Class<? extends Salter> salter;
+	private final Class<?> annotation;
+	private final Class<? extends Encryptor> encryptor;
+	private final Class<? extends Salter> salter;
 
 	// TODO private Class<?> executor;
 
@@ -44,14 +44,6 @@ public class AnnotationMapping {
 		AnnotationMapping other = (AnnotationMapping) obj;
 
 		return toString().equals(other.toString());
-	}
-
-	public void setEncryptor(Class<? extends Encryptor> encryptor) {
-		this.encryptor = encryptor;
-	}
-
-	public void setSalter(Class<? extends Salter> salter) {
-		this.salter = salter;
 	}
 
 	public Class<?> getAnnotation() {
