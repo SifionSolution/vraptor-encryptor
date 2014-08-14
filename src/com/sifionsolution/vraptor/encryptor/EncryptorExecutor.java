@@ -106,8 +106,8 @@ public class EncryptorExecutor {
 				return map;
 		}
 
-		logger.debug("No custom annotations used");
-		return null;
+		logger.error("No mapping found? This is critical. Maybe we got the wrong parameter? @Encrypt or a custom annotation is mandatory.");
+		throw new IllegalStateException("No mapping found.  @Encrypt or a custom annotation is mandatory.");
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class EncryptorExecutor {
 
 			return clazz.newInstance();
 		} catch (Exception e) {
-			logger.error("Coult not instantiate Encryptor", e);
+			logger.error("Could not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
 			return createDefaultSalter();
 		}
@@ -142,7 +142,7 @@ public class EncryptorExecutor {
 
 			return clazz.newInstance();
 		} catch (Exception e) {
-			logger.error("Coult not instantiate Encryptor", e);
+			logger.error("Could not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
 			return createDefaultEncryptor();
 		}
