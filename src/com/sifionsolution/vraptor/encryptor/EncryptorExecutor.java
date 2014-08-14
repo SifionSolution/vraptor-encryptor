@@ -125,15 +125,14 @@ public class EncryptorExecutor {
 	 */
 	private Salter createSalter(Class<? extends Salter> clazz) {
 		try {
+			if (clazz == null || Salter.class.equals(clazz))
+				return createDefaultSalter();
+
 			return clazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			logger.error("Coult not instantiate Encryptor", e);
-			logger.info("Returning null");
-			return null;
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			logger.error("Coult not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
-			return createSalter(configuration.getDefaultSalter());
+			return createDefaultSalter();
 		}
 	}
 
@@ -145,15 +144,14 @@ public class EncryptorExecutor {
 	 */
 	private Encryptor createEncryptor(Class<? extends Encryptor> clazz) {
 		try {
+			if (clazz == null || Encryptor.class.equals(clazz))
+				return createDefaultEncryptor();
+
 			return clazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			logger.error("Coult not instantiate Encryptor", e);
-			logger.info("Returning null");
-			return null;
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			logger.error("Coult not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
-			return createEncryptor(configuration.getDefaultEncryptor());
+			return createDefaultEncryptor();
 		}
 	}
 }
