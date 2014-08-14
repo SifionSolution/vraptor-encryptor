@@ -153,7 +153,7 @@ public class EncryptConfiguration {
 		mapDefault();
 
 		for (AnnotationMapping map : mappings)
-			map.addDefaultsWhenNull(encryptMap);
+			map.addDefaultsWhenNotConfigured(encryptMap);
 	}
 
 	private void mapDefault() {

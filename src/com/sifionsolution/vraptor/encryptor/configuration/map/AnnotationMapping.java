@@ -17,7 +17,7 @@ public class AnnotationMapping {
 
 	public AnnotationMapping(Encrypt encryptAnnotation, AnnotationMapping defaults) {
 		this(encryptAnnotation.getClass(), encryptAnnotation.value(), encryptAnnotation.salter());
-		addDefaultsWhenNull(defaults);
+		addDefaultsWhenNotConfigured(defaults);
 	}
 
 	public AnnotationMapping(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
@@ -34,6 +34,7 @@ public class AnnotationMapping {
 		this(annotation.getClass(), null, null);
 	}
 
+	@Override
 	public String toString() {
 		if (annotation == null)
 			return "";
@@ -74,11 +75,11 @@ public class AnnotationMapping {
 		return salter;
 	}
 
-	public void addDefaultsWhenNull(AnnotationMapping defaultMap) {
-		if (salter == null)
+	public void addDefaultsWhenNotConfigured(AnnotationMapping defaultMap) {
+		if (salter == Salter.class)
 			salter = defaultMap.salter;
 
-		if (encryptor == null)
+		if (encryptor == Encryptor.class)
 			encryptor = defaultMap.encryptor;
 	}
 
