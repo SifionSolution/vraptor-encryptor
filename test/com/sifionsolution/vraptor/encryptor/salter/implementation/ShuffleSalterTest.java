@@ -7,10 +7,10 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 public class ShuffleSalterTest {
-	private EncryptSalter salter;
+	private Salter salter;
 
 	@Before
 	public void init() {

@@ -1,17 +1,17 @@
 package com.sifionsolution.vraptor.encryptor.configuration.map;
 
 import com.sifionsolution.vraptor.encryptor.Encryptor;
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 public class AnnotationMapping {
 	private Class<?> annotation;
 	private Class<? extends Encryptor> encryptor;
-	private Class<? extends EncryptSalter> salter;
+	private Class<? extends Salter> salter;
 
 	// TODO private Class<?> executor;
 
 	public AnnotationMapping(Class<?> annotation, Class<? extends Encryptor> encryptor,
-			Class<? extends EncryptSalter> salter) {
+			Class<? extends Salter> salter) {
 		this.annotation = annotation;
 		this.encryptor = encryptor;
 		this.salter = salter;
@@ -21,7 +21,7 @@ public class AnnotationMapping {
 		this.encryptor = encryptor;
 	}
 
-	public void setSalter(Class<? extends EncryptSalter> salter) {
+	public void setSalter(Class<? extends Salter> salter) {
 		this.salter = salter;
 	}
 
@@ -33,7 +33,7 @@ public class AnnotationMapping {
 		return encryptor;
 	}
 
-	public Class<? extends EncryptSalter> getSalter() {
+	public Class<? extends Salter> getSalter() {
 		return salter;
 	}
 

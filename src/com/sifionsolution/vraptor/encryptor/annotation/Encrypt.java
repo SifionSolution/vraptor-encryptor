@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.sifionsolution.vraptor.encryptor.Encryptor;
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 @Retention(RUNTIME)
 @Target(PARAMETER)
 public @interface Encrypt {
 	Class<? extends Encryptor> value() default Encryptor.class;
 
-	Class<? extends EncryptSalter> salter() default EncryptSalter.class;
+	Class<? extends Salter> salter() default Salter.class;
 }

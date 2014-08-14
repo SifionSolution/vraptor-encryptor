@@ -14,7 +14,7 @@ import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.CustomAnnotationConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @RequestScoped
@@ -54,7 +54,7 @@ public class EncryptorExecutor {
 	private String defaultEncrypt(Encrypt annotation, String toEncrypt) {
 		// TODO will be encapsulated by EncryptStrategy feature
 		Encryptor encryptor = extractEncryptor(annotation);
-		EncryptSalter salter = extractSalter(annotation);
+		Salter salter = extractSalter(annotation);
 
 		return encryptor.encrypt(salter.salt(toEncrypt));
 	}
@@ -66,8 +66,8 @@ public class EncryptorExecutor {
 	 * @param annotation
 	 * @return Salter instance
 	 */
-	private EncryptSalter extractSalter(Encrypt annotation) {
-		if (annotation.salter() != EncryptSalter.class) {
+	private Salter extractSalter(Encrypt annotation) {
+		if (annotation.salter() != Salter.class) {
 			return createSalter(annotation.salter());
 		}
 
@@ -102,7 +102,7 @@ public class EncryptorExecutor {
 		// TODO will be encapsulated by EncryptStrategy feature
 
 		Encryptor encryptor = createEncryptor(custom.getEncryptor());
-		EncryptSalter salter = createSalter(custom.getSalter());
+		Salter salter = createSalter(custom.getSalter());
 
 		return encryptor.encrypt(salter.salt(toEncrypt));
 	}
@@ -132,7 +132,7 @@ public class EncryptorExecutor {
 	 * @param clazz
 	 * @return Salter instance
 	 */
-	private EncryptSalter createSalter(Class<? extends EncryptSalter> clazz) {
+	private Salter createSalter(Class<? extends Salter> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {

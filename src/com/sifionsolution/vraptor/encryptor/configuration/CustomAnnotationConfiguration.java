@@ -13,7 +13,7 @@ import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @ApplicationScoped
@@ -38,7 +38,7 @@ public class CustomAnnotationConfiguration {
 	 * @return
 	 */
 	public CustomAnnotationConfiguration setDefaults(Class<? extends Encryptor> encryptor,
-			Class<? extends EncryptSalter> salter) {
+			Class<? extends Salter> salter) {
 
 		logger.debug("Changing Encrypt defaults: Encryptor => " + encryptor.getCanonicalName() + " Salter => "
 				+ salter.getCanonicalName());
@@ -73,7 +73,7 @@ public class CustomAnnotationConfiguration {
 	 * @return
 	 */
 	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor,
-			Class<? extends EncryptSalter> salter) {
+			Class<? extends Salter> salter) {
 
 		if (annotation == Encrypt.class) {
 			return setDefaults(encryptor, salter);
@@ -109,7 +109,7 @@ public class CustomAnnotationConfiguration {
 	 * 
 	 * @return
 	 */
-	public Class<? extends EncryptSalter> getEncryptDefaultSalter() {
+	public Class<? extends Salter> getEncryptDefaultSalter() {
 		return getEncryptMap().getSalter();
 	}
 

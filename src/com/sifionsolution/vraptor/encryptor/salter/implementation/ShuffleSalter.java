@@ -2,9 +2,9 @@ package com.sifionsolution.vraptor.encryptor.salter.implementation;
 
 import static com.sifionsolution.commons.StringAdapter.getNullSafe;
 
-import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
+import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
-public class ShuffleSalter implements EncryptSalter {
+public class ShuffleSalter implements Salter {
 
 	@Override
 	public String salt(String value) {
