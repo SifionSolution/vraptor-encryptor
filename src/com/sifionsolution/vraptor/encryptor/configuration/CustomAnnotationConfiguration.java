@@ -93,7 +93,7 @@ public class CustomAnnotationConfiguration {
 	 *            - Annotation to be found
 	 * @return <code>null</code> if no AnnotationMapping was found
 	 */
-	private AnnotationMapping findMapping(Class<Encrypt> clazz) {
+	public AnnotationMapping findMapping(Class<?> clazz) {
 		for (AnnotationMapping map : mappings) {
 			if (clazz == map.getAnnotation())
 				return map;
