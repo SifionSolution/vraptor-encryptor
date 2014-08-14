@@ -10,12 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.http.Parameter;
 
-import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
-import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
-import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @RequestScoped
 public class EncryptorExecutor {
@@ -37,11 +34,11 @@ public class EncryptorExecutor {
 	public String encrypt(Parameter parameter, String toEncrypt) {
 		AnnotationMapping custom = findCustomAnnotationMapping(parameter.getDeclaredAnnotations());
 
-		if (custom != null) {
+		if (custom != null)
 			return useCustomMappingToEncrypt(custom, toEncrypt);
-		}
 
-		return defaultEncrypt(parameter.getAnnotation(Encrypt.class), toEncrypt);
+		// If custom is null, means that even Encryptor.class was present. This was holding a bug.
+		return defaultEncrypt(toEncrypt);
 	}
 
 	/**
@@ -51,10 +48,10 @@ public class EncryptorExecutor {
 	 * @param toEncrypt
 	 * @return
 	 */
-	private String defaultEncrypt(Encrypt annotation, String toEncrypt) {
+	private String defaultEncrypt(String toEncrypt) {
 		// TODO will be encapsulated by EncryptStrategy feature
-		Encryptor encryptor = extractEncryptor(annotation);
-		Salter salter = extractSalter(annotation);
+		Encryptor encryptor = createDefaultEncryptor();
+		Salter salter = createDefaultSalter();
 
 		return encryptor.encrypt(salter.salt(toEncrypt));
 	}
@@ -63,30 +60,20 @@ public class EncryptorExecutor {
 	 * Determines if should use the Encrypt Mapping Configuration or annotated
 	 * salter
 	 * 
-	 * @param annotation
 	 * @return Salter instance
 	 */
-	private Salter extractSalter(Encrypt annotation) {
-		if (annotation.salter() != Salter.class) {
-			return createSalter(annotation.salter());
-		}
-
-		return createSalter(configuration.getEncryptDefaultSalter());
+	private Salter createDefaultSalter() {
+		return createSalter(configuration.getDefaultSalter());
 	}
 
 	/**
 	 * Determines if should use the Encrypt Mapping Configuration or annotated
 	 * encryptor
 	 * 
-	 * @param annotation
 	 * @return Encryptor instance
 	 */
-	private Encryptor extractEncryptor(Encrypt annotation) {
-		if (annotation.value() != Encryptor.class) {
-			return createEncryptor(annotation.value());
-		}
-
-		return createEncryptor(configuration.getEncryptDefaultEncryptor());
+	private Encryptor createDefaultEncryptor() {
+		return createEncryptor(configuration.getDefaultEncryptor());
 	}
 
 	/**
@@ -135,10 +122,14 @@ public class EncryptorExecutor {
 	private Salter createSalter(Class<? extends Salter> clazz) {
 		try {
 			return clazz.newInstance();
-		} catch (Exception e) {
-			logger.error("Coult not instantiate Salter", e);
-			logger.info("Returning default Salter");
-			return new DefaultSalter();
+		} catch (InstantiationException | IllegalAccessException e) {
+			logger.error("Coult not instantiate Encryptor", e);
+			logger.info("Returning null");
+			return null;
+		} catch (NullPointerException e) {
+			logger.error("Coult not instantiate Encryptor", e);
+			logger.info("Returning default Encryptor");
+			return createSalter(configuration.getDefaultSalter());
 		}
 	}
 
@@ -151,11 +142,14 @@ public class EncryptorExecutor {
 	private Encryptor createEncryptor(Class<? extends Encryptor> clazz) {
 		try {
 			return clazz.newInstance();
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException e) {
+			logger.error("Coult not instantiate Encryptor", e);
+			logger.info("Returning null");
+			return null;
+		} catch (NullPointerException e) {
 			logger.error("Coult not instantiate Encryptor", e);
 			logger.info("Returning default Encryptor");
-			return new Sha512Encryptor();
+			return createEncryptor(configuration.getDefaultEncryptor());
 		}
 	}
-
 }

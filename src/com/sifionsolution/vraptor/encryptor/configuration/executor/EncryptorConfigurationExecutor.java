@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptAnnotationCustomConfigurator;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 
 @Startup
 @ApplicationScoped
@@ -32,5 +32,7 @@ public class EncryptorConfigurationExecutor {
 			encryptorConfiguration.get().configure(configuration);
 			logger.info("Encyptor configured");
 		}
+
+		configuration.addDefaultsWhenNull();
 	}
 }

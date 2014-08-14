@@ -2,17 +2,23 @@ package com.sifionsolution.vraptor.encryptor.configuration.map;
 
 import static com.sifionsolution.commons.StringAdapter.getNullSafe;
 
+import java.lang.annotation.Annotation;
+
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 public class AnnotationMapping {
-	private final Class<?> annotation;
-	private final Class<? extends Encryptor> encryptor;
-	private final Class<? extends Salter> salter;
+	private final Class<? extends Annotation> annotation;
+	private Class<? extends Encryptor> encryptor;
+	private Class<? extends Salter> salter;
 
 	// TODO private Class<?> executor;
 
-	public AnnotationMapping(Class<?> annotation, Class<? extends Encryptor> encryptor, Class<? extends Salter> salter) {
+	public AnnotationMapping(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
+			Class<? extends Salter> salter) {
+		if (annotation == null)
+			throw new NullPointerException("The annotation class cannot be null.");
+
 		this.annotation = annotation;
 		this.encryptor = encryptor;
 		this.salter = salter;
@@ -46,7 +52,7 @@ public class AnnotationMapping {
 		return toString().equals(other.toString());
 	}
 
-	public Class<?> getAnnotation() {
+	public Class<? extends Annotation> getAnnotation() {
 		return annotation;
 	}
 
@@ -56,6 +62,14 @@ public class AnnotationMapping {
 
 	public Class<? extends Salter> getSalter() {
 		return salter;
+	}
+
+	public void addDefaultsWhenNull(AnnotationMapping defaultMap) {
+		if (salter == null)
+			salter = defaultMap.salter;
+
+		if (encryptor == null)
+			encryptor = defaultMap.encryptor;
 	}
 
 }

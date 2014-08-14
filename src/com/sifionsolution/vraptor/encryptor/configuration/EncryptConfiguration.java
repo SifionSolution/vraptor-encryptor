@@ -1,5 +1,6 @@
 package com.sifionsolution.vraptor.encryptor.configuration;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +24,13 @@ public class EncryptConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptConfiguration.class);
 
+	private Class<? extends Encryptor> defaultEncryptor;
+	private Class<? extends Salter> defaultSalter;
+
 	@PostConstruct
 	public void init() {
-		setDefaults(Sha512Encryptor.class, DefaultSalter.class);
+		defaultEncryptor = Sha512Encryptor.class;
+		defaultSalter = DefaultSalter.class;
 	}
 
 	/**
@@ -35,13 +40,16 @@ public class EncryptConfiguration {
 	 * @param salter
 	 * @return
 	 */
-	public EncryptConfiguration setDefaults(Class<? extends Encryptor> encryptor,
-			Class<? extends Salter> salter) {
+	public EncryptConfiguration setDefaults(Class<? extends Encryptor> encryptor, Class<? extends Salter> salter) {
+		if (encryptor != null)
+			defaultEncryptor = encryptor;
 
-		logger.debug("Changing Encrypt defaults: Encryptor => " + encryptor.getCanonicalName() + " Salter => "
-				+ salter.getCanonicalName());
+		if (salter != null)
+			defaultSalter = salter;
 
-		map(Encrypt.class, encryptor, salter);
+		logger.debug("Changed Encrypt defaults: Encryptor => " + defaultEncryptor.getName() + " Salter => "
+				+ defaultSalter.getName());
+
 		return this;
 	}
 
@@ -54,10 +62,8 @@ public class EncryptConfiguration {
 	 * @param encryptor
 	 * @return
 	 */
-	public EncryptConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor) {
-		AnnotationMapping map = getEncryptMap();
-
-		return map(annotation, encryptor, map.getSalter());
+	public EncryptConfiguration map(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor) {
+		return map(annotation, encryptor, null);
 	}
 
 	/**
@@ -68,7 +74,7 @@ public class EncryptConfiguration {
 	 * @param salter
 	 * @return
 	 */
-	public EncryptConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor,
+	public EncryptConfiguration map(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {
 
 		logger.debug("Mapping annotation " + annotation.getCanonicalName() + ": Encryptor => "
@@ -105,27 +111,27 @@ public class EncryptConfiguration {
 				return map;
 		}
 
-		logger.info("No Mapping found for Annotation: " + clazz.getCanonicalName());
+		logger.info("No Mapping found for Annotation: " + clazz.getName());
 
 		return null;
 	}
 
 	/**
-	 * Default Salter configured in Encrypt Annotation
+	 * Default configured Salter
 	 * 
 	 * @return
 	 */
-	public Class<? extends Salter> getEncryptDefaultSalter() {
-		return getEncryptMap().getSalter();
+	public Class<? extends Salter> getDefaultSalter() {
+		return defaultSalter;
 	}
 
 	/**
-	 * Default Encryptor configured in Encrypt Annotation
+	 * Default configured Encryptor
 	 * 
 	 * @return
 	 */
-	public Class<? extends Encryptor> getEncryptDefaultEncryptor() {
-		return getEncryptMap().getEncryptor();
+	public Class<? extends Encryptor> getDefaultEncryptor() {
+		return defaultEncryptor;
 	}
 
 	/**
@@ -135,5 +141,18 @@ public class EncryptConfiguration {
 	 */
 	private AnnotationMapping getEncryptMap() {
 		return findMapping(Encrypt.class);
+	}
+
+	public void addDefaultsWhenNull() {
+		AnnotationMapping encryptMap = getEncryptMap();
+
+		mapDefault();
+
+		for (AnnotationMapping map : mappings)
+			map.addDefaultsWhenNull(encryptMap);
+	}
+
+	private void mapDefault() {
+		map(Encrypt.class, defaultEncryptor, defaultSalter);
 	}
 }
