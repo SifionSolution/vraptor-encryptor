@@ -40,6 +40,8 @@ public class CustomAnnotationConfiguration {
 	public CustomAnnotationConfiguration setDefaults(Class<? extends Encryptor> encryptor,
 			Class<? extends EncryptSalter> salter) {
 
+		logger.debug("Changing Encrypt defaults: Encryptor => " + encryptor.getCanonicalName() + " Salter => "
+				+ salter.getCanonicalName());
 		AnnotationMapping map = getEncryptMap();
 		map.setEncryptor(encryptor);
 		map.setSalter(salter);
@@ -47,17 +49,19 @@ public class CustomAnnotationConfiguration {
 		return this;
 	}
 
+	/**
+	 * Mapping default Encryptor on a specific annotation class.
+	 * <p>
+	 * Note: Default Salter will be used
+	 * 
+	 * @param annotation
+	 * @param encryptor
+	 * @return
+	 */
 	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor) {
 		AnnotationMapping map = getEncryptMap();
 
 		return map(annotation, encryptor, map.getSalter());
-	}
-
-	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends EncryptSalter> salter) {
-		AnnotationMapping map = getEncryptMap();
-
-		return map(annotation, map.getEncryptor(), salter);
-
 	}
 
 	/**
@@ -75,6 +79,8 @@ public class CustomAnnotationConfiguration {
 			return setDefaults(encryptor, salter);
 		}
 
+		logger.debug("Mapping annotation " + annotation.getCanonicalName() + ": Encryptor => "
+				+ encryptor.getCanonicalName() + " Salter => " + salter.getCanonicalName());
 		mappings.add(new AnnotationMapping(annotation, encryptor, salter));
 
 		return this;
