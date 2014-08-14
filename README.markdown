@@ -67,6 +67,14 @@ You can specify the [salter strategy (check available strategies)](https://githu
   //TODO 
 ```
 
+## Implement your Salter
+
+*(Coming soon)* - You can also implement your own Encryption strategy. To do this, all you need to do is:
+
+```java
+  //TODO 
+```
+
 ## @Encrypt Field injection
 
 *(Coming soon)* - For better code organization, you can use the ```@Encrypt``` annotation in your entity or DTO:
@@ -95,8 +103,9 @@ And receive that DTO directly on your action:
 @Post("/register")
 public void register(@NotNull @Valid SignUpUser user) {
 	validator.onErrorRedirectTo(RegisterController.class).index();
-
-	dao.register(user);
+        
+        // user.getPassword will return an encrypted string
+	dao.register(user); 
 
 	result.redirectTo(RootController.class).index();
 }
