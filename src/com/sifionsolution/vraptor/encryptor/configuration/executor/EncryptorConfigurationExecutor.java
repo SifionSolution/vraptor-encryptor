@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptAnnotationCustomConfigurator;
 
 @Startup
 @ApplicationScoped
 public class EncryptorConfigurationExecutor {
 
 	@Inject
-	private Instance<EncryptorConfiguration> encryptorConfiguration;
+	private Instance<EncryptAnnotationCustomConfigurator> encryptorConfiguration;
 
 	@Inject
 	private EncryptConfiguration configuration;
