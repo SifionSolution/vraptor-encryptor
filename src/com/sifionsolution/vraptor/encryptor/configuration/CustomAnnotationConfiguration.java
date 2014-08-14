@@ -1,7 +1,7 @@
 package com.sifionsolution.vraptor.encryptor.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -19,14 +19,12 @@ import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 @ApplicationScoped
 public class CustomAnnotationConfiguration {
 
-	private List<AnnotationMapping> mappings;
+	private Set<AnnotationMapping> mappings = new HashSet<>();
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomAnnotationConfiguration.class);
 
 	@PostConstruct
 	public void init() {
-		mappings = new ArrayList<AnnotationMapping>();
-
 		mappings.add(new AnnotationMapping(Encrypt.class, Sha512Encryptor.class, DefaultSalter.class));
 	}
 
