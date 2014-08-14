@@ -35,26 +35,7 @@ public class EncryptorExecutor {
 	public String encrypt(Parameter parameter, String toEncrypt) {
 		AnnotationMapping custom = getAnnotationMapping(parameter.getDeclaredAnnotations());
 
-		if (custom != null)
-			return useCustomMappingToEncrypt(custom, toEncrypt);
-
-		// If custom is null, means that even Encryptor.class was present. This was holding a bug.
-		return defaultEncrypt(toEncrypt);
-	}
-
-	/**
-	 * Encrypts using default encrypting methods
-	 * 
-	 * @param annotation
-	 * @param toEncrypt
-	 * @return
-	 */
-	private String defaultEncrypt(String toEncrypt) {
-		// TODO will be encapsulated by EncryptStrategy feature
-		Encryptor encryptor = createDefaultEncryptor();
-		Salter salter = createDefaultSalter();
-
-		return encryptor.encrypt(salter.salt(toEncrypt));
+		return useCustomMappingToEncrypt(custom, toEncrypt);
 	}
 
 	/**
