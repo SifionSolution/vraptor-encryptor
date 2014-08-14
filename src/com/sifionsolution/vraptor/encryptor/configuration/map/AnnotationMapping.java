@@ -5,6 +5,7 @@ import static com.sifionsolution.commons.StringAdapter.getNullSafe;
 import java.lang.annotation.Annotation;
 
 import com.sifionsolution.vraptor.encryptor.Encryptor;
+import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
 
 public class AnnotationMapping {
@@ -13,6 +14,11 @@ public class AnnotationMapping {
 	private Class<? extends Salter> salter;
 
 	// TODO private Class<?> executor;
+
+	public AnnotationMapping(Encrypt encryptAnnotation, AnnotationMapping defaults) {
+		this(encryptAnnotation.getClass(), encryptAnnotation.value(), encryptAnnotation.salter());
+		addDefaultsWhenNull(defaults);
+	}
 
 	public AnnotationMapping(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {

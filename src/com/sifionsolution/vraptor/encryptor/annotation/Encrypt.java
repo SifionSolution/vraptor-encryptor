@@ -12,7 +12,7 @@ import com.sifionsolution.vraptor.encryptor.salter.Salter;
 @Retention(RUNTIME)
 @Target(PARAMETER)
 public @interface Encrypt {
-	Class<? extends Encryptor> value() default Encryptor.class;
+	Class<? extends Encryptor> value();
 
-	Class<? extends Salter> salter() default Salter.class;
+	Class<? extends Salter> salter();
 }

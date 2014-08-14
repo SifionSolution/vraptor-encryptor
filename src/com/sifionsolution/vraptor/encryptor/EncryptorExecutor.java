@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.http.Parameter;
 
+import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -32,7 +33,7 @@ public class EncryptorExecutor {
 	 * @return Encoded String
 	 */
 	public String encrypt(Parameter parameter, String toEncrypt) {
-		AnnotationMapping custom = findCustomAnnotationMapping(parameter.getDeclaredAnnotations());
+		AnnotationMapping custom = getAnnotationMapping(parameter.getDeclaredAnnotations());
 
 		if (custom != null)
 			return useCustomMappingToEncrypt(custom, toEncrypt);
@@ -101,9 +102,12 @@ public class EncryptorExecutor {
 	 *            Developers declared annotations
 	 * @return <code>null</code> if no mapping was found
 	 */
-	private AnnotationMapping findCustomAnnotationMapping(Annotation[] declaredAnnotations) {
+	private AnnotationMapping getAnnotationMapping(Annotation[] declaredAnnotations) {
 		for (Annotation annotation : declaredAnnotations) {
 			AnnotationMapping map = configuration.findMapping(annotation.getClass());
+
+			if (annotation instanceof Encrypt)
+				map = new AnnotationMapping((Encrypt) annotation, map);
 
 			if (map != null)
 				return map;
