@@ -17,7 +17,6 @@ import br.com.caelum.vraptor.http.ValuedParameter;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 import com.sifionsolution.vraptor.encryptor.EncryptorExecutor;
-import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 
 @Intercepts
 @RequestScoped
@@ -50,11 +49,8 @@ public class EncryptorInterceptor {
 		for (int i = 0; i < valuedParameters.length; i++) {
 			ValuedParameter obj = valuedParameters[i];
 
-			Annotation annotation = obj.getParameter().getAnnotation(Encrypt.class);
-
-			if (annotation == null) {
+			if (!executor.containsAny(obj.getParameter().getAnnotations()))
 				continue;
-			}
 
 			logger.debug("Intercepting parameter name: " + obj.getParameter().getName());
 

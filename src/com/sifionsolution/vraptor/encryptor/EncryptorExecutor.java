@@ -23,10 +23,18 @@ public class EncryptorExecutor {
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 
+	public boolean containsAny(Annotation[] annotations) {
+		for (Annotation a : annotations)
+			if (contains(a))
+				return true;
+
+		return false;
+	}
+
 	public boolean contains(Annotation annotation) {
 		return configuration.contains(annotation);
 	}
-	
+
 	/**
 	 * Encrypts user parameter selecting the intended strategy
 	 * 
