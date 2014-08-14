@@ -23,13 +23,24 @@ import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 @RequestScoped
 public class EncryptorInterceptor {
 
-	@Inject
 	private MethodInfo methodInfo;
-
-	@Inject
 	private EncryptorExecutor executor;
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorInterceptor.class);
+
+	/*
+	 * CDI eyes only
+	 */
+	@Deprecated
+	public EncryptorInterceptor() {
+		this(null, null);
+	}
+
+	@Inject
+	public EncryptorInterceptor(MethodInfo methodInfo, EncryptorExecutor executor) {
+		this.methodInfo = methodInfo;
+		this.executor = executor;
+	}
 
 	@AroundCall
 	public void around(SimpleInterceptorStack stack) {

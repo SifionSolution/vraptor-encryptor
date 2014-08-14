@@ -13,6 +13,7 @@ import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
+import com.sifionsolution.vraptor.encryptor.EncryptorExecutor;
 import com.sifionsolution.vraptor.encryptor.MyController;
 
 public class EncryptorInterceptorTest {
@@ -23,13 +24,16 @@ public class EncryptorInterceptorTest {
 	private MethodInfo methodInfo;
 
 	@Mock
+	private EncryptorExecutor executor;
+
+	@Mock
 	private SimpleInterceptorStack stack;
 
 	@Before
 	public void init() {
 		initMocks(this);
 
-		interceptor = new EncryptorInterceptor(methodInfo);
+		interceptor = new EncryptorInterceptor(methodInfo, executor);
 	}
 
 	@Test
