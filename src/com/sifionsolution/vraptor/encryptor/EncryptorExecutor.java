@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import br.com.caelum.vraptor.http.Parameter;
 
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
-import com.sifionsolution.vraptor.encryptor.configuration.CustomAnnotationConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -21,7 +21,7 @@ import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 public class EncryptorExecutor {
 
 	@Inject
-	private CustomAnnotationConfiguration configuration;
+	private EncryptConfiguration configuration;
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
 

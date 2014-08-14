@@ -17,11 +17,11 @@ import com.sifionsolution.vraptor.encryptor.salter.Salter;
 import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @ApplicationScoped
-public class CustomAnnotationConfiguration {
+public class EncryptConfiguration {
 
 	private Set<AnnotationMapping> mappings = new HashSet<>();
 
-	private static final Logger logger = LoggerFactory.getLogger(CustomAnnotationConfiguration.class);
+	private static final Logger logger = LoggerFactory.getLogger(EncryptConfiguration.class);
 
 	@PostConstruct
 	public void init() {
@@ -35,7 +35,7 @@ public class CustomAnnotationConfiguration {
 	 * @param salter
 	 * @return
 	 */
-	public CustomAnnotationConfiguration setDefaults(Class<? extends Encryptor> encryptor,
+	public EncryptConfiguration setDefaults(Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {
 
 		logger.debug("Changing Encrypt defaults: Encryptor => " + encryptor.getCanonicalName() + " Salter => "
@@ -54,7 +54,7 @@ public class CustomAnnotationConfiguration {
 	 * @param encryptor
 	 * @return
 	 */
-	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor) {
+	public EncryptConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor) {
 		AnnotationMapping map = getEncryptMap();
 
 		return map(annotation, encryptor, map.getSalter());
@@ -68,7 +68,7 @@ public class CustomAnnotationConfiguration {
 	 * @param salter
 	 * @return
 	 */
-	public CustomAnnotationConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor,
+	public EncryptConfiguration map(Class<?> annotation, Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {
 
 		logger.debug("Mapping annotation " + annotation.getCanonicalName() + ": Encryptor => "

@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sifionsolution.vraptor.encryptor.configuration.CustomAnnotationConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
 import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfiguration;
 
 @Startup
@@ -20,7 +20,7 @@ public class EncryptorConfigurationExecutor {
 	private Instance<EncryptorConfiguration> encryptorConfiguration;
 
 	@Inject
-	private CustomAnnotationConfiguration configuration;
+	private EncryptConfiguration configuration;
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorConfigurationExecutor.class);
 
