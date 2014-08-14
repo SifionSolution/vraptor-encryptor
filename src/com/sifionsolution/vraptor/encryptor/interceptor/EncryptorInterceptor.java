@@ -66,7 +66,9 @@ public class EncryptorInterceptor {
 			Encryptor encryptor = extractEncryptor(((Encrypt) annotation).value());
 			EncryptSalter salter = extractSalter(((Encrypt) annotation).salter());
 
-			methodInfo.setParameter(i, encryptor.encrypt(String.valueOf(obj.getValue()), salter));
+			String newParameter = encryptor.encrypt(salter.salt(String.valueOf(obj.getValue())));
+
+			methodInfo.setParameter(i, newParameter);
 		}
 
 		stack.next();
