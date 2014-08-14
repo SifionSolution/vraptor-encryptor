@@ -1,7 +1,5 @@
 package com.sifionsolution.vraptor.encryptor.interceptor;
 
-import static com.sifionsolution.commons.ContentVerifyer.notEmpty;
-
 import java.lang.annotation.Annotation;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,12 +16,10 @@ import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.http.ValuedParameter;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
-import com.sifionsolution.vraptor.encryptor.EncryptStrategy;
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.EncryptSalter;
-import com.sifionsolution.vraptor.encryptor.salter.SalterStrategy;
 import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
 
 @Intercepts
@@ -74,24 +70,24 @@ public class EncryptorInterceptor {
 		stack.next();
 	}
 
-	private EncryptSalter extractSalter(SalterStrategy[] strategyArray) {
-		if (notEmpty(strategyArray)) {
-			return strategyArray[0].getSalter();
+	private EncryptSalter extractSalter(Class<? extends EncryptSalter> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (Exception e) {
+			logger.error("Coult not instantiate Salter", e);
+			logger.info("Returning default Salter");
+			return new DefaultSalter();
 		}
-
-		logger.info("No Salters configured. Return default");
-
-		return new DefaultSalter();
 	}
 
-	private Encryptor extractEncryptor(EncryptStrategy[] strategyArray) {
-		if (notEmpty(strategyArray)) {
-			return strategyArray[0].getEncryptor();
+	private Encryptor extractEncryptor(Class<? extends Encryptor> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (Exception e) {
+			logger.error("Coult not instantiate Encryptor", e);
+			logger.info("Returning default Encryptor");
+			return new Sha512Encryptor();
 		}
-
-		logger.info("No Encrypt Strategy configured. Return default");
-
-		return new Sha512Encryptor();
 	}
 
 	@Accepts
