@@ -4,6 +4,9 @@ import static com.sifionsolution.commons.StringAdapter.getNullSafe;
 
 import java.lang.annotation.Annotation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sifionsolution.vraptor.encryptor.Encryptor;
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -15,9 +18,12 @@ public class AnnotationMapping {
 
 	// TODO private Class<?> executor;
 
-	public AnnotationMapping(Encrypt encryptAnnotation, AnnotationMapping defaults) {
+	private static final Logger logger = LoggerFactory.getLogger(AnnotationMapping.class);
+
+	public AnnotationMapping(Encrypt encryptAnnotation, Class<? extends Encryptor> defaultEncryptor,
+			Class<? extends Salter> defaultSalter) {
 		this(encryptAnnotation.getClass(), encryptAnnotation.value(), encryptAnnotation.salter());
-		addDefaultsWhenNotConfigured(defaults);
+		addDefaultsWhenNotConfigured(defaultEncryptor, defaultSalter);
 	}
 
 	public AnnotationMapping(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
@@ -75,12 +81,21 @@ public class AnnotationMapping {
 		return salter;
 	}
 
-	public void addDefaultsWhenNotConfigured(AnnotationMapping defaultMap) {
-		if (salter == Salter.class)
-			salter = defaultMap.salter;
+	public void addDefaultsWhenNotConfigured(Class<? extends Encryptor> defaultEncryptor,
+			Class<? extends Salter> defaultSalter) {
+		logger.debug("Checking configuration used by Annotated values ");
 
-		if (encryptor == Encryptor.class)
-			encryptor = defaultMap.encryptor;
+		if (salter == Salter.class) {
+			logger.debug("No Salter configured. Using default: " + defaultSalter.getName());
+
+			salter = defaultSalter;
+		}
+
+		if (encryptor == Encryptor.class) {
+			logger.debug("No Encryptor configured. Using default: " + defaultEncryptor.getName());
+
+			encryptor = defaultEncryptor;
+		}
 	}
 
 }
