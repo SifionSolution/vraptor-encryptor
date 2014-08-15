@@ -110,6 +110,9 @@ dependencies {
 	compile library.cdi
 	compile library.cdi_weld
 	compile library.ssolution_commons
+
+	compile library.log4j
+	compile library.slf4j_simple
 	
 	testCompile library.jmockito
 	testCompile library.junit
