@@ -41,14 +41,23 @@ public class EncryptConfiguration {
 	 * @return
 	 */
 	public EncryptConfiguration setDefaults(Class<? extends Encryptor> encryptor, Class<? extends Salter> salter) {
-		if (encryptor != null)
+		logger.info("Changing default encryptor and salter");
+
+		StringBuilder builder = new StringBuilder();
+
+		if (encryptor != null) {
+			builder.append("Changed Encryptor => ").append(defaultEncryptor.getName()).append(" to => ")
+					.append(encryptor.getName());
 			defaultEncryptor = encryptor;
+		}
 
-		if (salter != null)
+		if (salter != null) {
+			builder.append("Changed Salter => ").append(defaultSalter.getName()).append(" to => ")
+					.append(salter.getName());
 			defaultSalter = salter;
+		}
 
-		logger.debug("Changed Encrypt defaults: Encryptor => " + defaultEncryptor.getName() + " Salter => "
-				+ defaultSalter.getName());
+		logger.debug(builder.toString());
 
 		return this;
 	}
