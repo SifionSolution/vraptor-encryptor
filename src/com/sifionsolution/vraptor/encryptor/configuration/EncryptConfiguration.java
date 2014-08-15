@@ -162,7 +162,7 @@ public class EncryptConfiguration {
 		mapDefault();
 
 		for (AnnotationMapping map : mappings)
-			map.addDefaultsWhenNotConfigured(encryptMap);
+			map.addDefaultsWhenNotConfigured(defaultEncryptor, defaultSalter);
 	}
 
 	private void mapDefault() {
