@@ -147,18 +147,7 @@ public class EncryptConfiguration {
 		return defaultEncryptor;
 	}
 
-	/**
-	 * Shortcut for <code>findingMaping(Encrypt.class)</code>
-	 * 
-	 * @return <code>null</code> if Encrypt Map was not found
-	 */
-	private AnnotationMapping getEncryptMap() {
-		return findMapping(Encrypt.class);
-	}
-
 	public void addDefaultsWhenNull() {
-		AnnotationMapping encryptMap = getEncryptMap();
-
 		mapDefault();
 
 		for (AnnotationMapping map : mappings)
