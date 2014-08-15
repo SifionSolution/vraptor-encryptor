@@ -133,4 +133,28 @@ public class EncryptorExecutorTest {
 		assertTrue(notEmpty(result));
 		assertEquals(result, md5Encrypted);
 	}
+
+	@Test
+	public void shouldUseCustomAnnotation() {
+		EncryptConfiguration config = new EncryptConfiguration();
+		config.init();
+
+		config.map(PasswordEncryptAnnotation.class, Md5Encryptor.class, DefaultSalter.class);
+
+		executor = new EncryptorExecutor(config);
+
+		Annotation[] parameterAnnotations = new Annotation[1];
+		parameterAnnotations[0] = new PasswordEncryptAnnotation() {
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return null;
+			}
+		};
+
+		when(parameter.getDeclaredAnnotations()).thenReturn(parameterAnnotations);
+		String result = executor.encrypt(parameter, toEncrypt);
+
+		assertTrue(notEmpty(result));
+		assertEquals(result, md5Encrypted);
+	}
 }
