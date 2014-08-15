@@ -19,10 +19,21 @@ import com.sifionsolution.vraptor.encryptor.salter.Salter;
 @RequestScoped
 public class EncryptorExecutor {
 
-	@Inject
 	private EncryptConfiguration configuration;
 
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorExecutor.class);
+
+	/*
+	 * CDI eyes only
+	 */
+	@Deprecated
+	public EncryptorExecutor() {
+	}
+
+	@Inject
+	public EncryptorExecutor(EncryptConfiguration configuration) {
+		this.configuration = configuration;
+	}
 
 	/**
 	 * Checking for mapped annotations
