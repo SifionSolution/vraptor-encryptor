@@ -135,6 +135,40 @@ public class EncryptorExecutorTest {
 	}
 
 	@Test
+	public void shouldUseMappedEncryptAnnotation() {
+		EncryptConfiguration config = new EncryptConfiguration();
+		config.init();
+
+		config.map(Encrypt.class, Md5Encryptor.class, DefaultSalter.class);
+
+		executor = new EncryptorExecutor(config);
+
+		Annotation[] parameterAnnotations = new Annotation[1];
+		parameterAnnotations[0] = new Encrypt() {
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return null;
+			}
+
+			@Override
+			public Class<? extends Encryptor> value() {
+				return Encryptor.class;
+			}
+
+			@Override
+			public Class<? extends Salter> salter() {
+				return Salter.class;
+			}
+		};
+
+		when(parameter.getDeclaredAnnotations()).thenReturn(parameterAnnotations);
+		String result = executor.encrypt(parameter, toEncrypt);
+
+		assertTrue(notEmpty(result));
+		assertEquals(result, md5Encrypted);
+	}
+
+	@Test
 	public void shouldUseCustomAnnotation() {
 		EncryptConfiguration config = new EncryptConfiguration();
 		config.init();
