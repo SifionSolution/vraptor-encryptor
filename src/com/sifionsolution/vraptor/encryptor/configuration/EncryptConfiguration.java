@@ -148,6 +148,9 @@ public class EncryptConfiguration {
 		return defaultEncryptor;
 	}
 
+	/**
+	 * Adds the defaults for null Encryptors and/or Salters.
+	 */
 	public void addDefaultsWhenNull() {
 		for (AnnotationMapping map : mappings)
 			map.addDefaultsWhenNotConfigured(defaultEncryptor, defaultSalter);
