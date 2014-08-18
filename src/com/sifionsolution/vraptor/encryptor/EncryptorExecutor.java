@@ -129,7 +129,7 @@ public class EncryptorExecutor {
 	 */
 	private AnnotationMapping getAnnotationMapping(Annotation[] declaredAnnotations) {
 		for (Annotation annotation : declaredAnnotations) {
-			AnnotationMapping map = configuration.findMapping(annotation.getClass());
+			AnnotationMapping map = configuration.findMapping(annotation.annotationType());
 
 			if (annotation instanceof Encrypt)
 				map = new AnnotationMapping((Encrypt) annotation, configuration.getDefaultEncryptor(),
