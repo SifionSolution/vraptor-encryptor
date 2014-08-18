@@ -47,7 +47,7 @@ public class EncryptorExecutorTest {
 		parameterAnnotations[0] = new Encrypt() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
-				return null;
+				return Encrypt.class;
 			}
 
 			@Override
@@ -65,7 +65,7 @@ public class EncryptorExecutorTest {
 		String result = executor.encrypt(parameter, toEncrypt);
 
 		assertTrue(notEmpty(result));
-		assertEquals(result, sha512Encrypted);
+		assertEquals(sha512Encrypted, result);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class EncryptorExecutorTest {
 		parameterAnnotations[0] = new Encrypt() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
-				return null;
+				return Encrypt.class;
 			}
 
 			@Override
@@ -99,7 +99,7 @@ public class EncryptorExecutorTest {
 		String result = executor.encrypt(parameter, toEncrypt);
 
 		assertTrue(notEmpty(result));
-		assertEquals(result, md5Encrypted);
+		assertEquals(md5Encrypted, result);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class EncryptorExecutorTest {
 		parameterAnnotations[0] = new Encrypt() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
-				return null;
+				return Encrypt.class;
 			}
 
 			@Override
@@ -131,7 +131,7 @@ public class EncryptorExecutorTest {
 		String result = executor.encrypt(parameter, toEncrypt);
 
 		assertTrue(notEmpty(result));
-		assertEquals(result, md5Encrypted);
+		assertEquals(md5Encrypted, result);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class EncryptorExecutorTest {
 		parameterAnnotations[0] = new Encrypt() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
-				return null;
+				return Encrypt.class;
 			}
 
 			@Override
@@ -165,7 +165,7 @@ public class EncryptorExecutorTest {
 		String result = executor.encrypt(parameter, toEncrypt);
 
 		assertTrue(notEmpty(result));
-		assertEquals(result, md5Encrypted);
+		assertEquals(md5Encrypted, result);
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class EncryptorExecutorTest {
 		parameterAnnotations[0] = new PasswordEncryptAnnotation() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
-				return null;
+				return PasswordEncryptAnnotation.class;
 			}
 		};
 
