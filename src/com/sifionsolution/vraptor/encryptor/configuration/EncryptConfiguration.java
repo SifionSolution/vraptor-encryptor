@@ -116,8 +116,10 @@ public class EncryptConfiguration {
 	 */
 	public AnnotationMapping findMapping(Class<?> clazz) {
 		for (AnnotationMapping map : mappings) {
-			if (clazz == map.getAnnotation())
+			if (clazz == map.getAnnotation()) {
+				logger.info("Mapping found: " + map);
 				return map;
+			}
 		}
 
 		logger.info("No Mapping found for Annotation: " + clazz.getName());
