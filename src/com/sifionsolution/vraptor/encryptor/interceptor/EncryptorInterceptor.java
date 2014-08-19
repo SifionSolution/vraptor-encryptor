@@ -17,7 +17,6 @@ import br.com.caelum.vraptor.http.ValuedParameter;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 import com.sifionsolution.vraptor.encryptor.EncryptorExecutor;
-import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 
 @Intercepts
 @RequestScoped
@@ -70,7 +69,7 @@ public class EncryptorInterceptor {
 		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
 		for (Annotation[] ann : annotations) {
 			for (Annotation a : ann) {
-				if (a instanceof Encrypt || executor.contains(a))
+				if (executor.contains(a))
 					return true;
 			}
 		}
