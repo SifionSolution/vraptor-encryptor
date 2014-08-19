@@ -50,7 +50,8 @@ public class EncryptorInterceptor {
 		for (int i = 0; i < valuedParameters.length; i++) {
 			ValuedParameter obj = valuedParameters[i];
 
-			if (!executor.containsAny(obj.getParameter().getAnnotations()))
+			if (!isEncryptAnnotation(obj.getParameter().getAnnotations())
+					&& !executor.containsAny(obj.getParameter().getAnnotations()))
 				continue;
 
 			logger.info("Intercepting parameter name: " + obj.getParameter().getName());
@@ -61,6 +62,15 @@ public class EncryptorInterceptor {
 		}
 
 		stack.next();
+	}
+
+	private boolean isEncryptAnnotation(Annotation[] annotations) {
+		for (Annotation an : annotations) {
+			if (an instanceof Encrypt) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Accepts
