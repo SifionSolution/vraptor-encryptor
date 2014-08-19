@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sifionsolution.vraptor.encryptor.Encryptor;
-import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
 import com.sifionsolution.vraptor.encryptor.configuration.map.AnnotationMapping;
 import com.sifionsolution.vraptor.encryptor.implementation.Sha512Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
@@ -151,13 +150,6 @@ public class Configuration {
 	 */
 	public Class<? extends Encryptor> getDefaultEncryptor() {
 		return defaultEncryptor;
-	}
-
-	/**
-	 * Default mapping of Encrypt annotation
-	 */
-	public void mapEncrypt() {
-		map(Encrypt.class, defaultEncryptor, defaultSalter);
 	}
 
 	/**

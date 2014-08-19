@@ -35,11 +35,6 @@ public class EncryptorInterceptorTest {
 	public void init() {
 		initMocks(this);
 
-		Configuration configuration = new Configuration();
-		configuration.mapEncrypt();
-
-		EncryptorExecutor executor = new EncryptorExecutor(configuration);
-
 		interceptor = new EncryptorInterceptor(methodInfo, executor);
 	}
 

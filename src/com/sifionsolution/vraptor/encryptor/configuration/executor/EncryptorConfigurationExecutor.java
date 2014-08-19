@@ -33,9 +33,6 @@ public class EncryptorConfigurationExecutor {
 			logger.info("Encyptor configured");
 		}
 
-		logger.info("Mandatory Mapping for Encrypt with defaults");
-		configuration.mapEncrypt();
-
 		configuration.addDefaultsWhenNull();
 	}
 }
