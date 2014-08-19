@@ -44,7 +44,7 @@ public class EncryptorInterceptor {
 
 	@AroundCall
 	public void around(SimpleInterceptorStack stack) {
-		logger.debug("EncrytorInterceptor activated");
+		logger.info("EncrytorInterceptor activated");
 		ValuedParameter[] valuedParameters = methodInfo.getValuedParameters();
 
 		for (int i = 0; i < valuedParameters.length; i++) {
@@ -53,7 +53,7 @@ public class EncryptorInterceptor {
 			if (!executor.containsAny(obj.getParameter().getAnnotations()))
 				continue;
 
-			logger.debug("Intercepting parameter name: " + obj.getParameter().getName());
+			logger.info("Intercepting parameter name: " + obj.getParameter().getName());
 
 			String newParameter = executor.encrypt(obj.getParameter(), String.valueOf(obj.getValue()));
 
@@ -65,6 +65,8 @@ public class EncryptorInterceptor {
 
 	@Accepts
 	public boolean accepts(ControllerMethod method) {
+		logger.info("Trying to intercept method from Controller " + method.getController().getType().getName());
+
 		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
 		for (Annotation[] ann : annotations) {
 			for (Annotation a : ann) {
