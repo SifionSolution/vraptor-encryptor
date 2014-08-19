@@ -37,7 +37,7 @@ public class AnnotationMapping {
 	}
 
 	public AnnotationMapping(Annotation annotation) {
-		this(annotation.getClass(), null, null);
+		this(annotation.annotationType(), null, null);
 	}
 
 	@Override
