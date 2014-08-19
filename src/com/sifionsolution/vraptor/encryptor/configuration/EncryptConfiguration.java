@@ -85,8 +85,12 @@ public class EncryptConfiguration {
 	public EncryptConfiguration map(Class<? extends Annotation> annotation, Class<? extends Encryptor> encryptor,
 			Class<? extends Salter> salter) {
 
-		logger.debug("Mapping annotation " + annotation.getCanonicalName() + ": Encryptor => " + encryptor != null ? encryptor
-				.getCanonicalName() : "null" + " Salter => " + salter != null ? salter.getCanonicalName() : "null");
+		String newEncryptor = encryptor == null ? "null encryptor" : encryptor.getCanonicalName();
+		String newSalter = salter == null ? "null salter" : salter.getCanonicalName();
+
+		logger.debug("Mapping annotation " + annotation.getCanonicalName());
+		logger.debug("Encryptor => " + newEncryptor);
+		logger.debug("Salter => " + newSalter);
 
 		replaceIfExists(new AnnotationMapping(annotation, encryptor, salter));
 
