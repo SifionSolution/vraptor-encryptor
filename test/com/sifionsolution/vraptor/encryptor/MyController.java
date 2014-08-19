@@ -16,4 +16,7 @@ public class MyController {
 	public void unused(String whatever, Object obj) {
 	}
 
+	public void custom(String whatever, Object obj, @PasswordEncryptAnnotation String password) {
+	}
+
 }
