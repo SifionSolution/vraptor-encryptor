@@ -107,6 +107,9 @@ repositories {
 dependencies {
 	compile library.vraptor
 	compile library.inject
+
+	compile library.javax_servlet
+
 	compile library.cdi
 	compile library.cdi_weld
 	compile library.ssolution_commons
