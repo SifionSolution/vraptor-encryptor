@@ -1,18 +1,18 @@
 package com.sifionsolution.vraptor.encryptor.configuration.executor;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfigurator;
 import com.sifionsolution.vraptor.encryptor.configuration.Configuration;
+import com.sifionsolution.vraptor.encryptor.configuration.EncryptorConfigurator;
 
-@Startup
 @ApplicationScoped
 public class EncryptorConfigurationExecutor {
 
@@ -25,7 +25,7 @@ public class EncryptorConfigurationExecutor {
 	private static final Logger logger = LoggerFactory.getLogger(EncryptorConfigurationExecutor.class);
 
 	@PostConstruct
-	public void init() {
+	public void init(@Observes ServletContext context) {
 		logger.info("Initializing encryptor configuration");
 
 		if (!encryptorConfiguration.isUnsatisfied()) {
