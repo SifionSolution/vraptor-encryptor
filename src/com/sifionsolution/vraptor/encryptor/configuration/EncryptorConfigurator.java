@@ -1,6 +1,6 @@
 package com.sifionsolution.vraptor.encryptor.configuration;
 
-public interface EncryptAnnotationCustomConfigurator {
+public interface EncryptorConfigurator {
 
 	public void configure(Configuration conf);
 }
