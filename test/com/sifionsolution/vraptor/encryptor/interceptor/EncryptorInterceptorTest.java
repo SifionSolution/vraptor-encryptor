@@ -16,7 +16,7 @@ import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 import com.sifionsolution.vraptor.encryptor.EncryptorExecutor;
 import com.sifionsolution.vraptor.encryptor.MyController;
 import com.sifionsolution.vraptor.encryptor.PasswordEncryptAnnotation;
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.Configuration;
 
 public class EncryptorInterceptorTest {
 
@@ -64,7 +64,7 @@ public class EncryptorInterceptorTest {
 
 	@Test
 	public void shouldAcceptIfMappedAnnotationIsPresent() {
-		EncryptConfiguration configuration = new EncryptConfiguration();
+		Configuration configuration = new Configuration();
 		configuration.map(PasswordEncryptAnnotation.class, null);
 
 		EncryptorExecutor executor = new EncryptorExecutor(configuration);

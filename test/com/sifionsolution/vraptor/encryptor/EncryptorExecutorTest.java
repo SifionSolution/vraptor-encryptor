@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import br.com.caelum.vraptor.http.Parameter;
 
 import com.sifionsolution.vraptor.encryptor.annotation.Encrypt;
-import com.sifionsolution.vraptor.encryptor.configuration.EncryptConfiguration;
+import com.sifionsolution.vraptor.encryptor.configuration.Configuration;
 import com.sifionsolution.vraptor.encryptor.implementation.Md5Encryptor;
 import com.sifionsolution.vraptor.encryptor.salter.Salter;
 import com.sifionsolution.vraptor.encryptor.salter.implementation.DefaultSalter;
@@ -38,7 +38,7 @@ public class EncryptorExecutorTest {
 
 	@Test
 	public void shouldUseDefaultsWhenNothingSpecified() {
-		EncryptConfiguration config = new EncryptConfiguration();
+		Configuration config = new Configuration();
 		config.init();
 
 		executor = new EncryptorExecutor(config);
@@ -70,7 +70,7 @@ public class EncryptorExecutorTest {
 
 	@Test
 	public void shouldUseMappedDefaultsToEncryptWhenEncryptAnnotationIsFound() {
-		EncryptConfiguration config = new EncryptConfiguration();
+		Configuration config = new Configuration();
 		config.init();
 
 		config.setDefaults(Md5Encryptor.class, DefaultSalter.class);
@@ -104,7 +104,7 @@ public class EncryptorExecutorTest {
 
 	@Test
 	public void shouldUseAnnotatedDefaultsToEncryptWhenEncryptAnnotationIsFound() {
-		EncryptConfiguration config = new EncryptConfiguration();
+		Configuration config = new Configuration();
 		config.init();
 
 		executor = new EncryptorExecutor(config);
@@ -136,7 +136,7 @@ public class EncryptorExecutorTest {
 
 	@Test
 	public void shouldUseMappedEncryptAnnotation() {
-		EncryptConfiguration config = new EncryptConfiguration();
+		Configuration config = new Configuration();
 		config.init();
 
 		config.map(Encrypt.class, Md5Encryptor.class, DefaultSalter.class);
@@ -170,7 +170,7 @@ public class EncryptorExecutorTest {
 
 	@Test
 	public void shouldUseCustomAnnotation() {
-		EncryptConfiguration config = new EncryptConfiguration();
+		Configuration config = new Configuration();
 		config.init();
 
 		config.map(PasswordEncryptAnnotation.class, Md5Encryptor.class, DefaultSalter.class);
