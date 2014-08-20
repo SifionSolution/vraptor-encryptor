@@ -16,7 +16,7 @@ Easy encryption for VRaptor 4. Receive encrypted data directly on your Controlle
 </dependency>
 ```
 
-* Or ... try it out Gradle: 
+* Or ... try it out with Gradle: 
 
 ```gradle
 compile 'com.sifionsolution:vraptor-encryptor:1.0' //Check for the latest version
@@ -27,7 +27,7 @@ compile 'com.sifionsolution:vraptor-encryptor:1.0' //Check for the latest versio
 
 ## Basic usage
 
-The default configuration will encrypt your data with Sha512 encryption and use the *default encryption salter*. The default salter gets null safe version of your String [(check the source for details)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/implementation/DefaultSalter.java#L11).  All you you need its the ```@Encrypt``` annotation on your actions **parameter**:
+The default configuration will encrypt your data with Sha512 encryption and use the *default encryption salter*. The default salter gets null safe version of your String [(check the source for details)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/implementation/DefaultSalter.java#L11).  All you you need is the ```@Encrypt``` annotation on your actions **parameter**:
 
 ```java
 @Post("/register")
