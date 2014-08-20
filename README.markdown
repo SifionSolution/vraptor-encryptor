@@ -26,11 +26,11 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt String password) 
 
 ## Choose encryption
 
-You can change the encryption type by selecting the [encryption strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/EncryptStrategy.java):
+You can change the encryption type by selecting the [encryption strategy class](https://github.com/SifionSolution/vraptor-encryptor/tree/work/src/com/sifionsolution/vraptor/encryptor/implementation):
 
 ```java
 @Post("/register")
-public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.MD5) String password) {
+public void register(@NotNull @Valid SignUpUser user, @Encrypt(Md5Encryptor.class) String password) {
 	validator.onErrorRedirectTo(RegisterController.class).index();
     
     //Password is encrypted
@@ -38,16 +38,15 @@ public void register(@NotNull @Valid SignUpUser user, @Encrypt(EncryptStrategy.M
 
 	result.redirectTo(RootController.class).index();
 }
-
 ```
 
 ## Choose your Salter
 
-You can specify the [salter strategy (check available strategies)](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/SalterStrategy.java). Here´s an example:
+You can specify the [salter strategy class](https://github.com/SifionSolution/vraptor-encryptor/tree/work/src/com/sifionsolution/vraptor/encryptor/salter/implementation). Here´s an example:
 
 ```java
 	@Post("/register")
-	public void register(@NotNull @Valid SignUpUser user, @Encrypt(salter=SalterStrategy.SHUFFLE) String password) {
+	public void register(@NotNull @Valid SignUpUser user, @Encrypt(salter=ShuffleSalter.class) String password) {
 		validator.onErrorRedirectTo(RegisterController.class).index();
  	    
  	    //Password is encrypted
@@ -59,21 +58,94 @@ You can specify the [salter strategy (check available strategies)](https://githu
 
 
 
-## Implement your Salter
+## Implement your Salter or/and Encryptor
 
-*(Coming soon)* - You can also implement your own salter. To do this, all you need to do is:
+You can also implement your own strategies. To do this, all you need to do is implement your own [Salter](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/salter/Salter.java) or [Encryptor](https://github.com/SifionSolution/vraptor-encryptor/blob/work/src/com/sifionsolution/vraptor/encryptor/Encryptor.java)
+and specify the class on your annotation (or mapping annotation).
+
+## Change the @Encrypt annotation defaults 
+
+If you want to use @Encrypt annotation, but not with Sha512 and our default Salter, you can change the plugins configuration. So everywhere you choose to use @Encrypt we´ll use your prefered strategy.
+To do this, you need to create an ```@ApplicationScoped``` that implements ```EncryptorConfigurator```.
+This is how to do it:
 
 ```java
-  //TODO 
+@ApplicationScoped
+public class EncryptorConfiguration implements EncryptorConfigurator {
+
+	@Override
+	public void configure(Configuration config) {
+		config.setDefaults(Md5Encryptor.class, ShuffleSalter.class);
+	}
+
+}
 ```
 
-## Implement your Salter
+Now every time you use ```@Encrypt``` we will use Md5 encryption and the Shuffle salter. Note that you can use your own versions of encryptor and salter here.
+ 
+## Create your own annotations with your own strategies
 
-*(Coming soon)* - You can also implement your own Encryption strategy. To do this, all you need to do is:
+This feature is pretty cool, because if you use more than one type of encryption, you don´t need to spread out the configuration through many Controllers using ```@Encrypt(value=, salter=)```. Imagine how hard it would be to maintain if you have to change one of those strategies?
+So, you can create your own annotation and map it. Let´s create two annotations as an example:
+
+We´ll use the following annotation to encrypt passwords.
 
 ```java
-  //TODO 
+@Retention(RUNTIME)
+@Target(PARAMETER)
+public @interface PasswordEncryption {
+}
 ```
+
+And this one to create hashes:
+
+```java
+@Retention(RUNTIME)
+@Target(PARAMETER)
+public @interface HashEncryption {
+}
+```
+
+So now, all we need to do is configure it (again, implementing ```EncryptorConfigurator```):
+
+```java
+@ApplicationScoped
+public class EncryptorConfiguration implements EncryptorConfigurator {
+
+	@Override
+	public void configure(Configuration config) {
+		config.map(PasswordEncryption.class, Sha512Encryptor.class, ShuffleSalter.class);
+		config.map(HashEncryption.class, Md5Encryptor.class, DefaultSalter.class);
+	}
+
+}
+```
+
+Cool now we can use the annotation we created like this:
+
+```java
+@Post("/register")
+public void register(@NotNull @Valid SignUpUser user, @PasswordEncryption String password) {
+	validator.onErrorRedirectTo(RegisterController.class).index();
+    
+    //Password is encrypted
+	dao.register(user, password);
+
+	result.redirectTo(RootController.class).index();
+}
+
+@Post("/checkHash")
+public void check(@HashEncryption String hash) {
+	validator.onErrorRedirectTo(RootController.class).index();
+    
+	//Do something with the MD5 hash:
+	System.out.println(hash);
+	
+	result.redirectTo(RootController.class).index();
+}
+```
+
+
 
 ## @Encrypt Field injection
 
