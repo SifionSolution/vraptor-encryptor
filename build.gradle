@@ -58,9 +58,9 @@ uploadArchives {
             }
 
             pom.project {
-               name 'ssolution-encryptor'
+               name 'vraptor-encryptor'
                packaging 'jar'
-               description 'Utilities classes we use through various projects'
+               description 'Easy Encryption for VRaptor 4'
                url 'https://github.com/SifionSolution/vraptor-encryptor'
 			   organization {
 			       name 'Sifion Solution'
