@@ -1,10 +1,27 @@
 # vraptor-encrytor
 
-Receive encrypted data directly on your Controller method.
+Easy encryption for VRaptor 4. Receive encrypted data directly on your Controller method.
 
 # Install and Configuration
 
-Soon will be available on Maven.
+* Manually [add the jar file](http://repo1.maven.org/maven2/com/sifionsolution/vraptor-encryptor/) to your app 
+
+* Or ... add our dependency to your maven build script:
+
+```xml
+<dependency>
+    <groupId>com.sifionsolution</groupId>
+    <artifactId>vraptor-encryptor</artifactId>
+    <version>1.0</version> <!-- Check for the latest version -->
+</dependency>
+```
+
+* Or ... try it out Gradle: 
+
+```gradle
+compile 'com.sifionsolution:vraptor-encryptor:1.0' //Check for the latest version
+```
+
 
 # Usage and Features
 
