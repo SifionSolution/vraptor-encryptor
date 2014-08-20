@@ -82,7 +82,7 @@ and specify the class on your annotation (or mapping annotation).
 
 ## Change the @Encrypt annotation defaults 
 
-If you want to use @Encrypt annotation, but not with Sha512 and our default Salter, you can change the plugins configuration. So everywhere you choose to use @Encrypt we´ll use your prefered strategy.
+If you want to use @Encrypt annotation, but not with Sha512 and our default Salter, you can change the plugin configuration. So everywhere you choose to use @Encrypt we´ll use your prefered strategy.
 To do this, you need to create an ```@ApplicationScoped``` that implements ```EncryptorConfigurator```.
 This is how to do it:
 
