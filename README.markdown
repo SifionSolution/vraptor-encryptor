@@ -147,7 +147,7 @@ public void check(@HashEncryption String hash) {
 
 
 
-## @Encrypt Field injection
+## (Coming soon) @Encrypt Field injection
 
 *(Coming soon)* - For better code organization, you can use the ```@Encrypt``` annotation in your entity or DTO:
 
